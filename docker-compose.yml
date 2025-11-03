@@ -1,0 +1,42 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    mem_limit: "512m"
+    cpus: "0.75"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: studypilot
+      POSTGRES_PASSWORD: studypilot
+      POSTGRES_DB: studypilot
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    command: >
+      -c shared_buffers=64MB
+      -c work_mem=4MB
+      -c max_connections=20
+      -c effective_cache_size=256MB
+    mem_limit: "512m"
+    cpus: "0.50"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  pgdata:
