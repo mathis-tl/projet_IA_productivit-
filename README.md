@@ -2,9 +2,9 @@
 
 Application de gestion de productivité avec intégration IA (Ollama).
 
-**Status**: 72/72 tests passing ✅ | Version 0.3.0
+**Statut**: Version 0.3.0 | Backend fonctionnel
 
-## Tech Stack
+## Stack Technique
 
 - FastAPI 0.115+
 - PostgreSQL 16 (Docker)
@@ -13,9 +13,9 @@ Application de gestion de productivité avec intégration IA (Ollama).
 - Pytest 8.0+
 - Ollama (mistral:7b)
 
-## Quick Start
+## Démarrage Rapide
 
-### Setup
+### Installation
 
 ```bash
 pip install -r requirements.txt
@@ -24,66 +24,66 @@ ollama serve &
 python -m pytest tests/ -q
 ```
 
-Expected: `72 passed`
+Résultat attendu: Les tests passent
 
-## Test It
+## Test de l'API
 
-### Auth
+### Authentification
 ```bash
 curl -X POST http://localhost:8000/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","username":"testuser","password":"pass123"}'
 ```
 
-### Get Token
+### Obtenir un token
 ```bash
 curl -X POST http://localhost:8000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"pass123"}' | jq -r '.access_token'
 ```
 
-### Create Page
+### Créer une page
 ```bash
-TOKEN=<your_token>
+TOKEN=<votre_token>
 
 curl -X POST http://localhost:8000/pages \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"title":"My page","icon":"📚"}'
+  -d '{"title":"Ma page","icon":"📚"}'
 ```
 
-### Summarize with Ollama
+### Résumer avec Ollama
 ```bash
-TOKEN=<your_token>
+TOKEN=<votre_token>
 
 curl -X POST http://localhost:8000/ai-analyze/summarize \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"content":"Your text here..."}'
+  -d '{"content":"Votre texte ici..."}'
 ```
 
-### Extract Actions
+### Extraire des actions
 ```bash
-TOKEN=<your_token>
+TOKEN=<votre_token>
 
 curl -X POST http://localhost:8000/ai-analyze/extract-actions \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"content":"Tomorrow call John, then finish the report..."}'
+  -d '{"content":"Demain appeler Jean, puis finir le rapport..."}'
 ```
 
 ## Architecture
 
 ```
 app/
-├── core/      Config, DB, Security
+├── core/      Config, DB, Sécurité
 ├── models/    6 tables (User, Page, Block, Task, Link, AITrace)
-├── schemas/   Pydantic validation
+├── schemas/   Validation Pydantic
 ├── routers/   8 endpoints
-└── services/  Business logic
+└── services/  Logique métier
 
 tests/
-└── 72 unit tests (SQLite)
+└── Tests unitaires (SQLite)
 ```
 
 ## Endpoints
@@ -98,9 +98,9 @@ tests/
 
 **Links**: POST/GET/DELETE /links
 
-**AI**: POST /ai-analyze/summarize, /ai-analyze/extract-actions
+**IA**: POST /ai-analyze/summarize, /ai-analyze/extract-actions
 
-## Database
+## Base de données
 
 ```
 users           pages           blocks          tasks
@@ -116,35 +116,35 @@ links           ai_traces
 └─ target_id    └─ generated_content
 ```
 
-## Testing
+## Tests
 
-Unit tests use **SQLite** (fast, isolated):
+Les tests unitaires utilisent **SQLite** (rapide, isolé):
 ```bash
-pytest tests/ -q          # Quick
-pytest tests/ -v          # Verbose
-pytest tests/ --cov=app   # With coverage
+pytest tests/ -q          # Rapide
+pytest tests/ -v          # Détaillé
+pytest tests/ --cov=app   # Avec couverture
 ```
 
-## Project Status
+## Statut du Projet
 
-| Feature | Status |
+| Feature | Statut |
 |---------|--------|
-| Auth + CRUD | ✅ Done |
-| Relations + Linking | ✅ Done |
-| Ollama Integration | ✅ Done |
-| Unit Tests (72/72) | ✅ Done |
-| spacy NLP | ⏳ Next |
-| Gamification | ⏳ TODO |
-| Templates | ⏳ TODO |
-| Notifications | ⏳ TODO |
+| Auth + CRUD | ✅ Fait |
+| Relations + Liens | ✅ Fait |
+| Intégration Ollama | ✅ Fait |
+| Tests unitaires | ✅ Fait |
+| NLP spacy | ⏳ Prochainement |
+| Gamification | ⏳ À faire |
+| Templates | ⏳ À faire |
+| Notifications | ⏳ À faire |
 
 ## Notes
 
-- Tests run on SQLite in ~2 seconds
-- All traces stored in `ai_traces` table
-- Docker container accesses Ollama via `host.docker.internal:11434`
-- Soft deletes (is_archived flag)
+- Tests exécutés en ~2 secondes sur SQLite
+- Toutes les traces stockées dans `ai_traces`
+- Le container Docker accède à Ollama via `host.docker.internal:11434`
+- Soft delete (flag is_archived)
 
 ---
 
-Last Updated: 3 novembre 2025
+Mis à jour: 3 novembre 2025
