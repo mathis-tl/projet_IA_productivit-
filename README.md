@@ -2,7 +2,7 @@
 
 Application de gestion de productivité avec intégration IA (Ollama).
 
-**Statut**: Version 0.3.0 | Backend fonctionnel
+**Statut**: Version 0.4.0 | NLP + Auto-création de tâches
 
 ## Stack Technique
 
@@ -12,6 +12,7 @@ Application de gestion de productivité avec intégration IA (Ollama).
 - JWT + bcrypt
 - Pytest 8.0+
 - Ollama (mistral:7b)
+- spacy 3.8+ (NLP français)
 
 ## Démarrage Rapide
 
