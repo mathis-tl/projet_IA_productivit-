@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
-from app.routers import health, auth, pages, blocks, tasks, links, ai_traces, ai_analyzes
+from app.routers import health, auth, pages, blocks, tasks, links, ai_traces, ai_analyzes, ai_nlp
 
 # Init DB
 Base.metadata.create_all(bind=engine)
@@ -19,4 +19,5 @@ app.include_router(tasks.router)
 app.include_router(links.router)
 app.include_router(ai_traces.router)
 app.include_router(ai_analyzes.router)
+app.include_router(ai_nlp.router)
 
