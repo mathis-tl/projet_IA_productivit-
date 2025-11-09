@@ -248,3 +248,71 @@ def test_delete_task_success(auth_token):
         headers={"Authorization": f"Bearer {auth_token}"}
     )
     assert len(list_response.json()) == 0
+
+
+# TEST CREATE TASK FROM TEXT (NLP)
+def test_create_task_from_text_simple(auth_token):
+    """Créer une tâche simple via texte"""
+    response = client.post(
+        "/tasks/from-text",
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json={"text": "Appeler Jean demain"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["title"] == "Appeler Jean demain"
+    assert data["status"] == "todo"
+    assert data["ai_suggested"] == True
+
+
+def test_create_task_from_text_with_priority(auth_token):
+    """Créer une tâche avec priorité détectée via NLP"""
+    response = client.post(
+        "/tasks/from-text",
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json={"text": "Urgent: finir le rapport aujourd'hui"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["priority"] == "high"  # "urgent" → priorité haute
+
+
+def test_create_task_from_text_with_date(auth_token):
+    """Créer une tâche avec date détectée si possible"""
+    response = client.post(
+        "/tasks/from-text",
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json={"text": "Réunion demain à 14h avec l'équipe"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    # Peut avoir une date ou pas, selon la détection spacy
+    # On vérifie juste que la tâche est créée
+    assert data["title"] is not None
+
+
+def test_create_task_from_text_low_priority(auth_token):
+    """Créer une tâche avec basse priorité"""
+    response = client.post(
+        "/tasks/from-text",
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json={"text": "Quand tu peux: lire cet article"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["priority"] == "low"
+
+
+def test_create_task_from_text_with_entities(auth_token):
+    """Créer une tâche avec entités (personnes, lieux, etc.)"""
+    response = client.post(
+        "/tasks/from-text",
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json={"text": "Appeler Marie et Pierre à Paris pour le projet"}
+    )
+    assert response.status_code == 201
+    data = response.json()
+    # Description devrait contenir les entités extraites
+    assert "description" in data
+    assert len(data["description"]) > 0
+

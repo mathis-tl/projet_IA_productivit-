@@ -94,11 +94,11 @@ tests/
 
 **Blocks**: GET/POST/PUT/DELETE /blocks
 
-**Tasks**: GET/POST/PUT/DELETE /tasks, GET /tasks/today, /tasks/overdue, /tasks/this-week
+**Tasks**: GET/POST/PUT/DELETE /tasks, POST /tasks/from-text, GET /tasks/today, /tasks/overdue, /tasks/this-week
 
 **Links**: POST/GET/DELETE /links
 
-**IA**: POST /ai-analyze/summarize, /ai-analyze/extract-actions
+**IA**: POST /ai-analyze/summarize, /ai-analyze/extract-actions, POST /ai-nlp/extract-entities, /ai-nlp/extract-dates, /ai-nlp/suggest-task
 
 ## Base de données
 
@@ -133,7 +133,8 @@ pytest tests/ --cov=app   # Avec couverture
 | Relations + Liens | ✅ Fait |
 | Intégration Ollama | ✅ Fait |
 | Tests unitaires | ✅ Fait |
-| NLP spacy | ⏳ Prochainement |
+| NLP spacy | ✅ Fait |
+| Auto-création Task via NLP | ✅ Fait |
 | Gamification | ⏳ À faire |
 | Templates | ⏳ À faire |
 | Notifications | ⏳ À faire |
@@ -147,4 +148,4 @@ pytest tests/ --cov=app   # Avec couverture
 
 ---
 
-Mis à jour: 3 novembre 2025
+Mis à jour: 9 novembre 2025
