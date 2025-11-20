@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
-from app.routers import health, auth, pages, blocks, tasks, links, ai_traces, ai_analyzes, ai_nlp
+from app.routers import health, auth, pages, blocks, tasks, links, ai_traces, ai_analyzes, ai_nlp, rewards
 
 # Init DB
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="ProductivityAI API",
-    version="0.3.0"
+    version="0.4.0"
 )
 
 # Routes
@@ -20,4 +20,5 @@ app.include_router(links.router)
 app.include_router(ai_traces.router)
 app.include_router(ai_analyzes.router)
 app.include_router(ai_nlp.router)
+app.include_router(rewards.router)
 

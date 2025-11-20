@@ -46,3 +46,37 @@ def setup_teardown():
 # Override la dépendance
 app.dependency_overrides[get_db] = override_get_db
 
+
+@pytest.fixture
+def client():
+    """Client de test FastAPI"""
+    from fastapi.testclient import TestClient
+    return TestClient(app)
+
+
+@pytest.fixture
+def db():
+    """Session DB pour les tests"""
+    db = TestingSessionLocal()
+    yield db
+    db.close()
+
+
+@pytest.fixture
+def auth_token(client, db):
+    """Crée un utilisateur et retourne son token JWT"""
+    from app.models.user import User
+    
+    # Créer un utilisateur
+    signup_response = client.post(
+        "/auth/signup",
+        json={"email": "test@example.com", "username": "testuser", "password": "pass123"}
+    )
+    
+    # Se connecter pour avoir un token
+    login_response = client.post(
+        "/auth/login",
+        json={"email": "test@example.com", "password": "pass123"}
+    )
+    
+    return login_response.json()["access_token"]
